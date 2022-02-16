@@ -1,0 +1,52 @@
+Last login: Tue Feb 15 10:04:05 on ttys000
+❯ j gitlab
+/Users/daviddrugeon-hamon/Documents/code/src/gitlab.laforge.cloud.bpifrance.fr/team/OBS/public/gitlab
+❯ cd ../datadog/agent
+❯ git checkout master
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+❯ code .
+❯ git checkout nexgen
+error: pathspec 'nexgen' did not match any file(s) known to git
+❯ git pull
+Already up to date.
+❯ clear
+repos:
+  - repo: local
+    hooks:
+      - id: ansible-lint
+        name: Ansible-lint
+        description: This hook runs ansible-lint.
+        entry: ansible-lint --force-color .
+        language: python
+        pass_filenames: false
+        always_run: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+                                                                                                                                                       12,18         All
