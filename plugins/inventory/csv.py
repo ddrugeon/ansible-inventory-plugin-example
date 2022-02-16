@@ -1,4 +1,7 @@
 from ansible.plugins.inventory import BaseInventoryPlugin
+from ansible.inventory.data import InventoryData
+
+import csv
 
 DOCUMENTATION = """
     name: csv
@@ -15,6 +18,15 @@ DOCUMENTATION = """
             choices: ['csv']
 """
 
+EXAMPLES = """
+# sample CSV file
+# host,groups
+# web1,webservers zone1
+# web2,webservers zone2
+# db1,dbservers zone1
+# db2,dbservers zone2
+"""
+
 
 class InventoryModule(BaseInventoryPlugin):
 
@@ -25,9 +37,17 @@ class InventoryModule(BaseInventoryPlugin):
         valid = False
         if super(InventoryModule, self).verify_file(path):
             # base class verifies that file exists and is readable by current user
-            if path.endswith(("csv.yaml", "csv.yml")):
+            if path.endswith((f"{self.NAME}.yml", f"{self.NAME}.yaml")):
                 valid = True
         return valid
 
-    def parse(self, inventory, loader, path, cache=True):
+    def parse(self, inventory: InventoryData, loader, path: str, cache: bool = True):
         super(InventoryModule, self).parse(inventory, loader, path, cache)
+
+        config = self._read_config_data(path)
+        input_data = csv.DictReader(open(config["source"]))
+        for entry in input_data:
+            host = entry["host"]
+            groups = entry["groups"].split(",")
+            inventory.add_group(groups)
+            inventory.add_host(host, groups)
